@@ -11,11 +11,11 @@ job("NodeJS_Docker_example") {
     }
     wrappers {
         nodejs("nodejs_16")
+        docker("main_docker")
     }
     steps {
         dockerBuildAndPublish {
             repositoryName("vahan90/docker-nodejs-demo")
-            docker("main_docker")
             tag('${GIT_REVISION,length=9}')
             registryCredentials("docker-registry")
             forcePull(false)
