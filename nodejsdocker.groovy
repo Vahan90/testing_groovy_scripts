@@ -11,7 +11,6 @@ job("NodeJS_Docker_example") {
     }
     wrappers {
         nodejs("nodejs_16")
-        docker("main_docker")
     }
     steps {
         dockerBuildAndPublish {
