@@ -19,7 +19,7 @@ node {
             }
         }
         docker.withRegistry("https://index.docker.io/v1", "docker-registry") {
-            def app = docker.build("wardviaene/docker-nodejs-demo:${commit_id}", '.').push()
+            def app = docker.build("vahan90/docker-nodejs-demo:${commit_id}", '.').push()
         }
     }
 }
