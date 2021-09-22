@@ -18,7 +18,7 @@ node {
                 env.PATH = "${dockerHome}/bin:${env.PATH}"
             }
         }
-        docker.withRegistry("https://index.docker.io/v1", "dockerhub") {
+        docker.withRegistry("https://index.docker.io/v1", "docker-registry") {
             def app = docker.build("wardviaene/docker-nodejs-demo:${commit_id}", '.').push()
         }
     }
