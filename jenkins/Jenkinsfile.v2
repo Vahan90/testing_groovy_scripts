@@ -12,8 +12,10 @@ node {
         def myTestContainer = docker.image('node:4.6')
         myTestContainer.pull()
         myTestContainer.inside {
-            sh 'npm install --only=dev'
-            sh 'npm test'
+            withEnv(['HOME=.',]) {
+                sh 'npm install --only=dev'
+                sh 'npm test'
+            }
         }
     }
     stage('test with a DB') {
@@ -21,8 +23,10 @@ node {
         def myTestContainer = docker.image('node:4.6')
         myTestContainer.pull()
         myTestContainer.inside("--link ${mysql.id}:mysql") {
-            sh 'npm install --only=dev'
-            sh 'npm test'
+            withEnv(['HOME=.',]) {
+                sh 'npm install --only=dev'
+                sh 'npm test'
+            }
         }
         mysql.stop()
     }
