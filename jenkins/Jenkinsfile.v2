@@ -1,4 +1,7 @@
 node {
+    environment {
+        HOME = '.'
+    }
     def commit_id
     stage('Preparation') {
         checkout scm
@@ -6,32 +9,26 @@ node {
         commit_id = readFile('.git/commit-id').trim()
     }
     stage('test') {
-        docker.withTool("docker") {
-            def myTestContainer = docker.image('node:4.6')
-            myTestContainer.pull()
-            myTestContainer.inside {
-                sh 'npm install --only=dev'
-                sh 'npm test'
-            }
+        def myTestContainer = docker.image('node:4.6')
+        myTestContainer.pull()
+        myTestContainer.inside {
+            sh 'npm install --only=dev'
+            sh 'npm test'
         }
     }
     stage('test with a DB') {
-        docker.withTool("docker") {
-            def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes")
-            def myTestContainer = docker.image('node:4.6')
-            myTestContainer.pull()
-            myTestContainer.inside("--link ${mysql.id}:mysql") {
-                sh 'npm install --only=dev'
-                sh 'npm test'
-            }
-            mysql.stop()
+        def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes")
+        def myTestContainer = docker.image('node:4.6')
+        myTestContainer.pull()
+        myTestContainer.inside("--link ${mysql.id}:mysql") {
+            sh 'npm install --only=dev'
+            sh 'npm test'
         }
+        mysql.stop()
     }
     stage('docker build/push') {
-        docker.withTool("docker") {
-            docker.withRegistry('https://index.docker.io/v1/', 'docker-registry') {
-                def app = docker.build("vahan90/docker-nodejs-demo:${commit_id}", '.').push()
-            }
+        docker.withRegistry('https://index.docker.io/v1/', 'docker-registry') {
+            def app = docker.build("vahan90/docker-nodejs-demo:${commit_id}", '.').push()
         }
     }
 }
