@@ -1,7 +1,7 @@
 node {
     def recipientProviders = [
-        [$class: 'CulpritRecipientProvider'],
-        [$class: 'DeveloperRecipientProvider'],
+        [$class: 'CulpritsRecipientProvider'],
+        [$class: 'DevelopersRecipientProvider'],
         [$class: 'RequesterRecipientProvider'],
     ]
 
