@@ -1,7 +1,7 @@
 node {
     def to = emailextrecipients([
-        [$class: 'CulptritRecipientProvider'],
-        [$class: 'DevelopeRecipientProvider'],
+        [$class: 'CulpritRecipientProvider'],
+        [$class: 'DeveloperRecipientProvider'],
         [$class: 'RequesterRecipientProvider'],
     ])
 
